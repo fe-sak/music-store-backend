@@ -20,7 +20,7 @@ export async function login(req, res) {
       if (!session.acknowledged) return res.sendStatus(500);
 
       const sessionId = { sessionId: session.insertedId.toHexString() };
-      const secretKey = process.env.SECRET_KEY;
+      const secretKey = process.env.JWT_SECRET_KEY;
       const options = { expiresIn: 60 * 60 * 24 * 30 };
 
       const token = Jwt.sign(sessionId, secretKey, options);
