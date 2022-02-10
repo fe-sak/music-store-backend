@@ -1,14 +1,10 @@
 import db from '../databaseConnect.js';
 import Jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 export default async function validateToken(req, res, next) {
   const { authorization } = req.headers;
   const token = authorization?.replace('JWT ', '');
-  console.log(process.env.SECRET_KEY);
   if (!token) return res.sendStatus(401);
 
   try {
