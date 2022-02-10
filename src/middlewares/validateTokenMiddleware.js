@@ -1,15 +1,18 @@
 import db from '../databaseConnect.js';
 import Jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
+import dotenv from 'dotenv';
 
-export default async function (req, res, next) {
+dotenv.config();
+
+export default async function validateToken(req, res, next) {
   const { authorization } = req.headers;
-
   const token = authorization?.replace('JWT ', '');
+  console.log(process.env.SECRET_KEY);
   if (!token) return res.sendStatus(401);
 
   try {
-    const decodedToken = Jwt.verify(token, process.env.SECRET_KEY);
+    const decodedToken = Jwt.verify(token, process.env.JWT_SECRET_KEY);
     const sessionId = decodedToken.sessionId;
 
     const session = await db
