@@ -26,6 +26,5 @@ export default async function (req, res, next) {
     console.log(error);
     return res.sendStatus(500);
   }
-  console.log('yay');
   next();
 }
