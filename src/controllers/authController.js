@@ -10,11 +10,11 @@ export async function signIn(req, res) {
   const { email, password } = req.body;
 
   try {
-    const user = await db.collection('users').findOne({ email });
+    const user = await db.users.findOne({ email });
 
     if (user && bcrypt.compareSync(password, user.password)) {
       const session = await db
-        .collection('sessions')
+        .sessions
         .insertOne({ userId: user._id });
 
       if (!session.acknowledged) return res.sendStatus(500);
@@ -51,12 +51,12 @@ export async function signUp(req, res) {
 
   try {
     const isCreated = await db
-      .collection('users')
+      .users
       .findOne({ email: user.email });
     if (isCreated) {
       return res.status(409).send('Email já cadastrado');
     }
-    await db.collection('users').insertOne({
+    await db.users.insertOne({
       ...user,
       password: bcrypt.hashSync(user.password, parseInt(process.env.SALT)),
     });

@@ -12,11 +12,11 @@ export default async function validateToken(req, res, next) {
     const sessionId = decodedToken.sessionId;
 
     const session = await db
-      .collection('sessions')
+      .sessions
       .findOne({ _id: new ObjectId(sessionId) });
     if (!session) return res.sendStatus(401);
 
-    const user = await db.collection('users').findOne({ _id: session.userId });
+    const user = await db.users.findOne({ _id: session.userId });
     if (!user) return res.sendStatus(401);
 
     delete user.password;
