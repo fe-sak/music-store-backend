@@ -3,14 +3,14 @@ import db from '../databaseConnect.js';
 
 export async function getProduct(req, res) {
   const { id: productId } = req.params;
-
+  console.log('A');
   try {
     const filter = { _id: new ObjectId(productId) };
     const updateDoc = { $inc: { views: 1 } };
 
-    await db.collection('products').updateOne(filter, updateDoc);
+    await db.products.updateOne(filter, updateDoc);
 
-    const product = await db.collection('products').findOne(filter);
+    const product = await db.products.findOne(filter);
 
     if (!product) return res.sendStatus(404);
 

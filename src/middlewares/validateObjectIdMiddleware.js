@@ -5,9 +5,7 @@ export default function validateObjectId(req, res, next) {
 
   const validate = objectIdSchema.validate(id);
   if (validate.error) {
-    return res
-      .status(422)
-      .send(validate.error.details.map((detail) => detail.message));
+    return res.sendStatus(404);
   }
   next();
 }
