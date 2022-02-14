@@ -3,7 +3,7 @@ import db from '../databaseConnect.js';
 
 export async function getProduct(req, res) {
   const { id: productId } = req.params;
-  console.log('A');
+
   try {
     const filter = { _id: new ObjectId(productId) };
     const updateDoc = { $inc: { views: 1 } };
@@ -19,4 +19,21 @@ export async function getProduct(req, res) {
     console.log(error);
     return res.sendStatus(500);
   }
+}
+
+export async function finishOrder(req, res) {
+  const products = req.body.products;
+  const user = res.locals.user;
+  const productsIds = products.map((product) => product._id);
+
+  const finishedOrder = { userId: user._id, productsIds };
+  console.log(products);
+  console.log(user);
+
+  try {
+    const promise = await db.finishOrders.insertOne(finishedOrder);
+  } catch (error) {
+    console.log(error);
+  }
+  res.sendStatus(201);
 }
